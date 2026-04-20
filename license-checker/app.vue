@@ -76,13 +76,10 @@
             >
               <div class="result-layout">
                 <div>
-                  <p class="section-kicker text-sm font-semibold uppercase tracking-wide">
-                    Most recent compatible version
-                  </p>
-                  <h3 class="value-title mt-3 text-4xl font-semibold tracking-tight">
+                  <h3 class="value-title text-4xl font-semibold tracking-tight">
                     {{ latestCompatibleVersion.version }}
                   </h3>
-                  <div class="meta-grid mt-4">
+                  <div class="meta-grid mt-5">
                     <div>
                       <p class="meta-label text-xs font-medium uppercase tracking-wide">
                         Released
@@ -196,8 +193,47 @@
             </div>
           </section>
 
-          <div class="support-grid">
-            <section class="panel panel--compact p-5">
+          <section class="panel panel--compact p-5">
+            <div
+              class="workspace-tabs"
+              role="tablist"
+              aria-label="Widget tools"
+            >
+              <button
+                :class="[
+                  'workspace-tab',
+                  activeWorkspaceTab === 'license'
+                    ? 'workspace-tab--license-active'
+                    : 'workspace-tab--idle',
+                ]"
+                :aria-selected="activeWorkspaceTab === 'license'"
+                role="tab"
+                type="button"
+                @click="activeWorkspaceTab = 'license'"
+              >
+                License Input
+              </button>
+              <button
+                :class="[
+                  'workspace-tab',
+                  activeWorkspaceTab === 'search'
+                    ? 'workspace-tab--search-active'
+                    : 'workspace-tab--idle',
+                ]"
+                :aria-selected="activeWorkspaceTab === 'search'"
+                role="tab"
+                type="button"
+                @click="activeWorkspaceTab = 'search'"
+              >
+                Version Search
+              </button>
+            </div>
+
+            <div
+              v-if="activeWorkspaceTab === 'license'"
+              class="tab-panel mt-5"
+              role="tabpanel"
+            >
               <div class="flex items-start justify-between gap-4">
                 <div>
                   <h2 class="panel-title text-lg font-semibold">License Input</h2>
@@ -213,6 +249,12 @@
                 >
                   Clear
                 </button>
+              </div>
+
+              <div class="status-card status-card--warning mt-4 text-sm">
+                Windows and Android are separate products. Make sure the selected
+                product above matches the license file or issue date you are
+                checking for {{ currentProductLabel }}.
               </div>
 
               <label class="field-label mt-5 block text-sm font-medium" for="license-upload">
@@ -353,13 +395,16 @@
                   </div>
                 </dl>
               </div>
-            </section>
+            </div>
 
-            <section class="panel panel--compact p-5">
+            <div
+              v-else
+              class="tab-panel mt-5"
+              role="tabpanel"
+            >
               <h2 class="panel-title text-lg font-semibold">Version Search</h2>
               <p class="panel-copy mt-1 text-sm">
-                Search every
-                {{ currentProductLabel }} release.
+                {{ searchPanelCopy }}
               </p>
 
               <div class="scope-switch mt-4">
@@ -493,8 +538,8 @@
                   {{ currentProductLabel }} release list.
                 </div>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
         </div>
 
         <div
@@ -592,6 +637,7 @@ const issuedMonthInput = ref(null);
 const issuedDayInput = ref(null);
 const searchQuery = ref("");
 const searchScope = ref("all");
+const activeWorkspaceTab = ref("license");
 const activePatchNotes = ref(null);
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
 
@@ -620,6 +666,11 @@ const currentProductLabel = computed(() => currentProduct.value.label);
 const currentProductTitle = computed(() => currentProduct.value.title);
 const currentProductPlaceholder = computed(
   () => currentProduct.value.placeholderVersion,
+);
+const searchPanelCopy = computed(() =>
+  searchScope.value === "compatible"
+    ? `Search ${currentProductLabel.value} releases compatible with your license.`
+    : `Search every ${currentProductLabel.value} release.`,
 );
 const allVersions = computed(
   () => versionStore.versionsByProduct[selectedProduct.value] || [],
@@ -945,14 +996,71 @@ const handleFileUpload = async (event) => {
   gap: 1rem;
 }
 
-.support-grid {
-  display: grid;
-  gap: 1rem;
-}
-
 .date-segment-grid {
   display: grid;
   gap: 0.75rem;
+}
+
+.tab-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace-tabs {
+  display: inline-flex;
+  width: 100%;
+  gap: 0.35rem;
+  border-radius: 1rem;
+  border: 1px solid var(--lb-border);
+  background: rgba(6, 25, 32, 0.78);
+  padding: 0.35rem;
+}
+
+.workspace-tab {
+  flex: 1 1 0;
+  border-radius: 0.85rem;
+  border: 1px solid transparent;
+  color: var(--lb-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.85rem 1rem;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.workspace-tab:hover {
+  color: var(--lb-heading);
+}
+
+.workspace-tab:focus-visible {
+  outline: none;
+  border-color: var(--lb-accent);
+  box-shadow: 0 0 0 3px rgba(99, 185, 255, 0.14);
+}
+
+.workspace-tab--idle {
+  background: transparent;
+}
+
+.workspace-tab--license-active {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(178, 63, 179, 0.24);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 18px rgba(178, 63, 179, 0.16);
+}
+
+.workspace-tab--search-active {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(99, 185, 255, 0.2);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 18px rgba(99, 185, 255, 0.14);
 }
 
 .date-segment-label {
@@ -1364,10 +1472,6 @@ const handleFileUpload = async (event) => {
 }
 
 @media (min-width: 1024px) {
-  .support-grid {
-    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  }
-
   .result-layout {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
