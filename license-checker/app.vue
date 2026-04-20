@@ -1,6 +1,6 @@
 <template>
   <div class="page-shell">
-    <div class="mx-auto max-w-5xl">
+    <div class="mx-auto w-full max-w-5xl">
       <div class="page-frame p-5 md:p-6">
         <div class="page-hero">
           <div class="hero-layout">
@@ -230,13 +230,64 @@
                 <label class="field-label block text-sm font-medium" for="issued-date">
                   Or enter an issued date
                 </label>
-                <input
+                <div
                   id="issued-date"
-                  v-model="issuedDate"
-                  class="input-field mt-2 block px-4 py-3 text-sm"
-                  type="date"
-                  @input="handleDateChange"
-                />
+                  class="date-segment-grid mt-2"
+                  role="group"
+                  aria-label="Issued date"
+                >
+                  <div>
+                    <label class="date-segment-label mb-2 block text-xs font-medium uppercase tracking-wide" for="issued-year">
+                      Year
+                    </label>
+                    <input
+                      id="issued-year"
+                      ref="issuedYearInput"
+                      :value="issuedYear"
+                      class="input-field block px-4 py-3 text-sm"
+                      inputmode="numeric"
+                      maxlength="4"
+                      placeholder="YYYY"
+                      type="text"
+                      @input="handleDateSegmentInput('year', $event)"
+                      @keydown="handleDateSegmentKeydown('year', $event)"
+                    />
+                  </div>
+                  <div>
+                    <label class="date-segment-label mb-2 block text-xs font-medium uppercase tracking-wide" for="issued-month">
+                      Month
+                    </label>
+                    <input
+                      id="issued-month"
+                      ref="issuedMonthInput"
+                      :value="issuedMonth"
+                      class="input-field block px-4 py-3 text-sm"
+                      inputmode="numeric"
+                      maxlength="2"
+                      placeholder="MM"
+                      type="text"
+                      @input="handleDateSegmentInput('month', $event)"
+                      @keydown="handleDateSegmentKeydown('month', $event)"
+                    />
+                  </div>
+                  <div>
+                    <label class="date-segment-label mb-2 block text-xs font-medium uppercase tracking-wide" for="issued-day">
+                      Day
+                    </label>
+                    <input
+                      id="issued-day"
+                      ref="issuedDayInput"
+                      :value="issuedDay"
+                      class="input-field block px-4 py-3 text-sm"
+                      inputmode="numeric"
+                      maxlength="2"
+                      placeholder="DD"
+                      type="text"
+                      @input="handleDateSegmentInput('day', $event)"
+                      @keydown="handleDateSegmentKeydown('day', $event)"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div
@@ -533,6 +584,12 @@ const uploadedFileName = ref("");
 const licenseHolderName = ref("");
 const licenseHolderEmail = ref("");
 const fileError = ref("");
+const issuedYear = ref("");
+const issuedMonth = ref("");
+const issuedDay = ref("");
+const issuedYearInput = ref(null);
+const issuedMonthInput = ref(null);
+const issuedDayInput = ref(null);
 const searchQuery = ref("");
 const searchScope = ref("all");
 const activePatchNotes = ref(null);
@@ -640,6 +697,125 @@ const searchStatus = computed(() => {
 const formatDate = (isoDate) =>
   dateFormatter.format(new Date(`${isoDate}T00:00:00Z`));
 
+const sanitizeDateSegment = (value, maxLength) =>
+  String(value || "").replace(/\D/g, "").slice(0, maxLength);
+
+const setIssuedDateSegments = (isoDate = "") => {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) {
+    [issuedYear.value, issuedMonth.value, issuedDay.value] = isoDate.split("-");
+    return;
+  }
+
+  issuedYear.value = "";
+  issuedMonth.value = "";
+  issuedDay.value = "";
+};
+
+const buildIssuedDateFromSegments = () => {
+  if (
+    issuedYear.value.length !== 4 ||
+    issuedMonth.value.length !== 2 ||
+    issuedDay.value.length !== 2
+  ) {
+    return "";
+  }
+
+  const year = Number(issuedYear.value);
+  const month = Number(issuedMonth.value);
+  const day = Number(issuedDay.value);
+  const date = new Date(Date.UTC(year, month - 1, day));
+
+  if (
+    Number.isNaN(year) ||
+    Number.isNaN(month) ||
+    Number.isNaN(day) ||
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return "";
+  }
+
+  return `${issuedYear.value}-${issuedMonth.value}-${issuedDay.value}`;
+};
+
+const clearManualLicenseMetadata = () => {
+  uploadedFileName.value = "";
+  licenseHolderName.value = "";
+  licenseHolderEmail.value = "";
+  fileError.value = "";
+  forever.value = false;
+};
+
+const updateIssuedDateFromSegments = () => {
+  clearManualLicenseMetadata();
+  issuedDate.value = buildIssuedDateFromSegments();
+};
+
+const focusDateSegment = (segment) => {
+  const refsBySegment = {
+    year: issuedYearInput,
+    month: issuedMonthInput,
+    day: issuedDayInput,
+  };
+
+  refsBySegment[segment]?.value?.focus();
+};
+
+const handleDateSegmentInput = (segment, event) => {
+  const configBySegment = {
+    year: { target: issuedYear, maxLength: 4, next: "month" },
+    month: { target: issuedMonth, maxLength: 2, next: "day" },
+    day: { target: issuedDay, maxLength: 2, next: "" },
+  };
+  const config = configBySegment[segment];
+
+  if (!config) {
+    return;
+  }
+
+  const sanitizedValue = sanitizeDateSegment(event.target.value, config.maxLength);
+  config.target.value = sanitizedValue;
+
+  if (event.target.value !== sanitizedValue) {
+    event.target.value = sanitizedValue;
+  }
+
+  updateIssuedDateFromSegments();
+
+  if (
+    config.next &&
+    sanitizedValue.length === config.maxLength &&
+    !event.inputType?.startsWith("delete")
+  ) {
+    focusDateSegment(config.next);
+  }
+};
+
+const handleDateSegmentKeydown = (segment, event) => {
+  if (event.key !== "Backspace") {
+    return;
+  }
+
+  const previousSegmentBySegment = {
+    year: "",
+    month: "year",
+    day: "month",
+  };
+  const currentValueBySegment = {
+    year: issuedYear.value,
+    month: issuedMonth.value,
+    day: issuedDay.value,
+  };
+  const previousSegment = previousSegmentBySegment[segment];
+
+  if (!previousSegment || currentValueBySegment[segment]) {
+    return;
+  }
+
+  focusDateSegment(previousSegment);
+};
+
 const hasPatchNotes = (version) =>
   Array.isArray(version?.notes) && version.notes.length > 0;
 
@@ -663,19 +839,12 @@ const handleWindowKeydown = (event) => {
 
 const clearLicenseContext = () => {
   issuedDate.value = "";
+  setIssuedDateSegments("");
   forever.value = false;
   uploadedFileName.value = "";
   licenseHolderName.value = "";
   licenseHolderEmail.value = "";
   fileError.value = "";
-};
-
-const handleDateChange = () => {
-  uploadedFileName.value = "";
-  licenseHolderName.value = "";
-  licenseHolderEmail.value = "";
-  fileError.value = "";
-  forever.value = false;
 };
 
 const handleFileUpload = async (event) => {
@@ -701,9 +870,11 @@ const handleFileUpload = async (event) => {
     licenseHolderName.value = parsedLicense.name;
     licenseHolderEmail.value = parsedLicense.email;
     issuedDate.value = parsedLicense.issuedDate;
+    setIssuedDateSegments(parsedLicense.issuedDate);
     forever.value = parsedLicense.forever;
   } catch (error) {
     issuedDate.value = previousState.issuedDate;
+    setIssuedDateSegments(previousState.issuedDate);
     forever.value = previousState.forever;
     uploadedFileName.value = previousState.uploadedFileName;
     licenseHolderName.value = previousState.licenseHolderName;
@@ -723,8 +894,19 @@ const handleFileUpload = async (event) => {
 <style scoped>
 .page-shell {
   width: 100%;
-  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  box-sizing: border-box;
   color: var(--lb-body-strong);
+}
+
+@supports (min-height: 100dvh) {
+  .page-shell {
+    min-height: 100dvh;
+  }
 }
 
 .page-frame {
@@ -766,6 +948,15 @@ const handleFileUpload = async (event) => {
 .support-grid {
   display: grid;
   gap: 1rem;
+}
+
+.date-segment-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.date-segment-label {
+  color: var(--lb-body);
 }
 
 .section-divider {
@@ -1161,6 +1352,10 @@ const handleFileUpload = async (event) => {
   .hero-layout {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
+  }
+
+  .date-segment-grid {
+    grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
   }
 
   .meta-grid {
