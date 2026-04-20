@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+:root {
+  --lb-bg: #041b23;
+  --lb-bg-deep: #02141b;
+  --lb-surface: #0a212a;
+  --lb-surface-raised: #112e38;
+  --lb-border: #20434f;
+  --lb-border-strong: #2e5b69;
+  --lb-heading: #d8d0c5;
+  --lb-body: #7f9098;
+  --lb-body-strong: #a9b7bd;
+  --lb-accent: #63b9ff;
+  --lb-magenta: #b33fb3;
+  --lb-green: #73bf3f;
+  --lb-error-bg: rgba(136, 47, 76, 0.22);
+  --lb-error-text: #f0b1c2;
+  --lb-warning-bg: rgba(117, 92, 23, 0.28);
+  --lb-warning-text: #ead290;
+  --lb-info-bg: rgba(30, 79, 112, 0.26);
+  --lb-info-text: #a6d7ff;
+  --lb-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+}
+
+html,
+body,
+#__nuxt {
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(27, 64, 78, 0.86) 0%, rgba(7, 30, 39, 0.96) 34%, rgba(2, 20, 27, 1) 100%);
+  color: var(--lb-body);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: rgba(99, 185, 255, 0.26);
+  color: #ffffff;
+}

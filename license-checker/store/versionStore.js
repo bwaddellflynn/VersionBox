@@ -1,58 +1,108 @@
 import { defineStore } from "pinia";
+import { buildDownloadUrl, parseCsvDate } from "~/utils/licenseCompatibility";
 
-// Helper function to parse CSV dates
-const parseCSVDate = (month, day, year) => {
-  try {
-    const formattedDate = new Date(`${month} ${day}, ${year}`);
-    if (isNaN(formattedDate.getTime())) {
-      console.error(`Invalid date parsed from CSV: ${month} ${day}, ${year}`);
-      return null;
-    }
-    return formattedDate.toISOString().split("T")[0]; // Convert to YYYY-MM-DD
-  } catch (error) {
-    console.error("Error parsing CSV date:", month, day, year, error);
-    return null;
-  }
+const PRODUCT_FILES = {
+  windows: "/versions.csv",
+  android: "/android-versions.csv",
+};
+
+const PRODUCT_LABELS = {
+  windows: "LaunchBox Windows",
+  android: "LaunchBox Android",
 };
 
 export const useVersionStore = defineStore("versionStore", {
-    state: () => ({
-      versions: [],
-    }),
-    actions: {
-      async fetchVersions() {
-        try {
-          console.log("Fetching versions from CSV...");
-          const response = await fetch("/versions.csv");
-          const text = await response.text();
-  
-          this.versions = text.split("\n").slice(1).map((line, index) => {
-            const columns = line.replace("\r", "").split(",");
-  
-            // ✅ Ensure we have exactly 4 columns (version, month, day, year)
+  state: () => ({
+    versionsByProduct: {
+      windows: [],
+      android: [],
+    },
+    isLoadingByProduct: {
+      windows: false,
+      android: false,
+    },
+    errorsByProduct: {
+      windows: "",
+      android: "",
+    },
+  }),
+  actions: {
+    async fetchVersions(productKey) {
+      if (!PRODUCT_FILES[productKey]) {
+        return;
+      }
+
+      if (
+        this.versionsByProduct[productKey].length ||
+        this.isLoadingByProduct[productKey]
+      ) {
+        return;
+      }
+
+      this.isLoadingByProduct[productKey] = true;
+      this.errorsByProduct[productKey] = "";
+
+      try {
+        const response = await fetch(PRODUCT_FILES[productKey]);
+
+        if (!response.ok) {
+          throw new Error(`Version data request failed with status ${response.status}.`);
+        }
+
+        const text = await response.text();
+        const parsedVersions = text
+          .split(/\r?\n/)
+          .slice(1)
+          .map((line, index) => {
+            if (!line.trim()) {
+              return null;
+            }
+
+            const columns = line.split(",");
+
             if (columns.length < 4) {
               console.warn(`Skipping invalid row at line ${index + 2}:`, columns);
               return null;
             }
-  
-            const [version, month, day, year] = columns.map(col => col ? col.trim() : null);
-  
-            // ✅ Ensure no null values before proceeding
+
+            const [version, month, day, year] = columns.map((column) =>
+              column ? column.trim() : "",
+            );
+
             if (!version || !month || !day || !year) {
               console.warn(`Skipping incomplete row at line ${index + 2}:`, columns);
               return null;
             }
-  
-            const parsedDate = parseCSVDate(month, day, year);
-            return parsedDate ? { version, date: new Date(parsedDate) } : null;
-          }).filter(entry => entry !== null);
-  
-          console.log("First 3 processed versions:", this.versions.slice(0, 3));
-          window.checkSpecificVersion = this.checkSpecificVersion; // Expose globally
-        } catch (error) {
-          console.error("Error fetching versions:", error);
-        }
-      },
+
+            const releaseDate = parseCsvDate(month, day, year);
+
+            if (!releaseDate) {
+              console.warn(
+                `Skipping row with an invalid release date at line ${index + 2}:`,
+                columns,
+              );
+              return null;
+            }
+
+            return {
+              version,
+              releaseDate,
+              productKey,
+              productLabel: PRODUCT_LABELS[productKey],
+              downloadUrl: buildDownloadUrl(productKey, version),
+            };
+          })
+          .filter(Boolean)
+          .sort((left, right) => right.releaseDate.localeCompare(left.releaseDate));
+
+        this.versionsByProduct[productKey] = parsedVersions;
+      } catch (error) {
+        this.errorsByProduct[productKey] =
+          `Could not load the ${PRODUCT_LABELS[productKey]} release list.`;
+        console.error(`Error fetching ${productKey} versions:`, error);
+      } finally {
+        this.isLoadingByProduct[productKey] = false;
+      }
     },
-  });
-  
+  },
+});
