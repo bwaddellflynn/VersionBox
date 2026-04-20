@@ -1,0 +1,458 @@
+﻿Version 1.22 - Released ???
+Added a new Security system that lets you lock down platform and game management features behind a PIN, with extensive configuration options available under Options > Security
+Added a visual update indicator for themes, showing a green badge on the Manage Themes menu item and next to individual themes when updates are available
+Updated Optimize Library behavior so star ratings across your entire library now refresh automatically when running an Update Library scan
+Fixed an issue that prevented setting a Scoped Storage path when the app was running as a homescreen launcher
+Version 1.21 - Released December 4, 2025
+Game Progress Tracking has arrived on Android, giving you full control to manually update your game progress status right from the game menu
+Added a new Game Progress Automation page that can automatically update game progress based on custom rules you define
+Added a new Game Progress Organization page with drag and drop support to reorder or customize your progress states using defaults or your own values
+LaunchBox for Android can now be used as an optional Home Screen launcher. Enable this feature from the Options menu.
+Added a new NAS Management page under Options where you can view your mapped drives, check their connection status, and repair broken links by scanning or updating the IP address
+Platforms can now be updated. Long press a platform to access the update option. LaunchBox will scan the platform directory for new and removed ROM files, add new ones, and optionally delete removed ones.
+Added new emulators: AzaharPlus, Snapulator MS, Snepulator SG, ARMSX2, Eden, Suyu, Sudachi, Sudachi (Early Access), Kenji-NX, Benji-SC, NooDS, MelonDS Dev (Dual Screen Fork)
+Games can now be imported into any platform even if no emulator is currently assigned to that platform
+Improved automatic image downloads for faster performance and better prioritization within game lists
+Improved performance on the loading page to reduce wait times for large game libraries
+Fixed the issue where Favorited games did not appear first when that option was enabled
+Fixed the issue where attempting to launch a game triggered an error and caused the launch screen to hang
+Fixed the issue where deleted games reappeared in the game list after returning to the platform screen
+Fixed the issue where platform metadata search results briefly appeared and then disappeared
+Fixed an issue where sorting games did not always arrange them in the correct order
+Fixed an issue where the Banner Filter view could jump or shift on newer versions of Android when the list was shorter than the device width
+Fixed the issue where the first controller button press did not register
+Fixed the issue that caused an error when loading settings if the Settings.xml file was missing
+Fixed a crash that could occur immediately after an image finished downloading
+Fixed a crash that could occur when using the directional buttons on a controller while viewing a filters page
+Version 1.20 - Released August 27, 2025
+Fixed an issue where using the Jump To menu could cause the navigation wheel to get stuck on the chosen game
+Resolved a crash that could occur when entering a game view while the game list was still loading
+Addressed a startup error that could happen the first time the Alphanumeric Index was used
+Corrected a problem that sometimes caused a crash when changing a RetroArch core under Emulator Settings
+Fixed a startup crash that could happen if the LaunchBox theme folder was marked as read only
+Fixed an issue on Android 15 and newer where the system top bar could overlap with LaunchBox
+Fixed a problem where importing from Vita3k could appear to hang with a black screen on large libraries or slower devices
+Version 1.19 - Released August 20, 2025
+You can now easily import and launch games installed in Vita3k. Just use the Import Games tool, choose Sony PlayStation Vita, and point to Vita3k's emulated storage space
+You can now create and manage playlists entirely on Android. Open any game’s menu and tap Add to Playlist to create a new playlist or add to an existing one. Once created, a new Playlists section will appear in your library
+A new Show Playlist Filters option on the Options page lets you show or hide playlist filters under your filter sections
+Browsing Filter and Game pages just got faster thanks to major behind-the-scenes optimizations
+The Settings pages have been refactored for quicker loading and smoother transitions
+The alphanumeric index has been fully rebuilt using a custom control that dramatically improves load times for any view using it and gives theme developers more flexibility
+Fixed syncing issues with PlayCount and PlayTime, making your game stats sync properly with the LaunchBox Games Database and stay consistent across Android and Windows builds
+Default text list views (FilterBasicTextList, FilterTextListWithDetails, GameBasicTextList, GameTextListWithDetails, GameTextListWithTwoColumnDetails) have been converted to utilize CollectionView, improving performance and enabling support for the new AlphaNumeric control
+Fixed a crash when setting ScopedStorage access and pressing the native Android back button without selecting a folder
+Fixed an issue where "Skip menu and play game on Tap" would not trigger the Download and Play option for NAS games
+Fixed a crash when the app attempted to show an alert message on disposed pages or popup pages
+Fixed a crash in the German localization caused by a specific localization string
+Fixed an issue with selecting filters or games on specific custom themes
+Version 1.18 - Released May 8, 2025
+Orientation Lock has been added, allowing users to lock the app's orientation to either Landscape, Portrait, Reverse Landscape, and Reverse Portrait, overriding the device's global orientation settings
+Scoped Storage framework support has been integrated as an option for all emulators. This enables enhanced folder and file permission settings, addressing requirements for certain emulators
+Updated the emulator launch framework for improved flexibility, easier condition handling, and easier maintenance
+The following Emulators have been added: Azahar, Citron, DroidArcadia, Infinity P8 Player
+Many emulators that had launching issues were fixed, notably: DuckStation, DraStic
+The following Cores have been added to RetroArch: Dirk Simple
+The following platforms have been added: BBC Microcomputer System, Emerson Arcadia 2001, Atari Jaguar CD, Epoch Super Vassette Vision, Fujitsu FM Towns Marty, Interton VC 4000, Mega Duck, Nokia N-Gage, Oric Atmos, Philips Videopac+, PICO-8, ScummVM, Sega Pico, Sony Playstation Vita, Nintendo 64DD, Sega Triforce, Sony Playstation 3, Microsoft Xbox
+Video downloading from streamed content is now functional. The application will now combine the video and audio streams and save them as a single file to your local drive
+Video streaming functionality has been restored; however, please note that only video will be streamed at this time due to the limitations of YouTube
+The application framework has been upgraded to .NET 9 (from .NET 8), providing enhanced performance and stability
+Additional Apps on a Network Share should once again download and play
+Significantly reduced the frequency of application crashes during video playback by addressing underlying stability issues
+Implemented functionality to automatically delete partially downloaded files when a game download is canceled over the network
+Resolved an issue where platform theme videos would unexpectedly restart when the device orientation was changed
+Updated the "Video downloading..." indicator text to "Video Stream loading..." to better reflect the process of streaming video content
+Touchscreen controls are now fully functional on the "Browse for New Games Database Image" page
+Added a visual loading indicator to provide feedback during shared drive connection attempts
+Fixed a bug that caused incorrect search results when canceling a game search
+Fixed an issue in the Manage Emulators section where Dolphin incorrectly displayed as not installed
+Fixed a crash when launching games into the AetherSX2 emulator
+Fixed a rare crash occurring during game imports
+Fixed a rare crash that happened while showing images
+Fixed a rare crash when clearing the platform image view
+Version 1.17 - Released February 12, 2025
+Downloading bin/cue games over a network share now includes both downloading and deleting all associated files
+Introduced a new "Download Game" option for games imported from a network share, enabling users to download games independently of playing them
+Added the ability to delete the local version of a game while maintaining its availability over the network
+Replaced the download game progress bar on the Launching view with a more comprehensive pop-up dialog
+Filter Views that utilize background videos should better identify the correct video to play
+Increased network buffer size to improve download speeds for game files from network shares
+Implemented a shared drive availability check prior to initiating game downloads
+The default Nintendo 64 core for RetroArch has been updated due to the previous one being retired
+Resolved an issue where downloading EmuMovies videos could cause the application to crash
+Resolved an issue where importing files over a network share did not consistently handle bin/cue files as intended
+Addressed a problem where the selected platform or game information did not always update accurately when using touch controls
+Fixed an issue where LaunchBox would freeze when launching games if notifications were blocked
+Fixed an issue that prevented Platform and Game videos from looping correctly
+Corrected an issue where the background video element behaved incorrectly when a custom view file lacked a foreground video element
+The app no longer crashes if the user exits the network share username/password input dialog
+Fixed a rare crash that could occur when attempting to play a game
+Addressed a crash that could occur when attempting to import games from a network
+Fixed an uncommon crash that may occur when users navigate between the hamburger menu items
+Fixed a crash that could occur on devices whose API is 27 or lower
+Fixed a rare crash that could stop users from proceeding with the import process
+Resolved a crash that could occur while navigating within a Boxes Grid view
+Addressed a crash that might happen during the import of MAME files
+Fixed a crash that could occur when changing screen orientation while on a Filters View
+Resolved a rare crash that could occur when long-pressing on specific elements
+Fixed several minor crashes reported by our reporting system
+Version 1.16 - Released December 20, 2024
+Network Drive Support: Import games directly from your local network drive. When launching a game, they will download locally
+Local Game Indicator: Games stored on your local network are now easily identified by a cloud icon for all default views
+New Filter Option: Quickly filter your game library to view only local or non-local games
+Screen Timeout Shortcut: Quickly control your Android device's system screen timeout directly within LaunchBox
+Expanded Emulator Support: Added full support for CEMU and Lime3DS emulators
+Framework Overhaul: Upgraded to the latest MAUI framework for improved performance and stability
+Fixed Play Time Sync: Resolved an issue that could cause inaccurate play time tracking
+Android Game Parsing Fix: Addressed an Android game parsing issue on startup for certain Android based VR headsets
+Version 1.15 - Released July 23, 2024
+Additional improvements with how LaunchBox handles your library when exceeding the 100-game limit without a license
+Dolphin can now be automatically downloaded and installed when launching a Nintendo GameCube or Nintendo Wii game (if it's not installed already); this makes it super easy to get up and playing without the need for a user to set up Dolphin separately
+The "Manage RetroArch" section has now been changed to "Manage Emulators", and just like RetroArch, you can now download, install, and update Dolphin with a touch of a button
+Full emulator support added for: MelonDS, and MelonDS Nightly
+A new method of adding custom emulators has been added. Use the "Custom Emulator (With Code)" option, within your Emulator Settings, which can leverage existing emulator launch code from other frontends
+Managing your Android app library has become easier! A new "Manage Apps" section lets you choose which apps appear within LaunchBox. Find it under the Android platform menu or the Options menu
+Sorting by Star Rating is now more accurate. When your games lack personal ratings, LaunchBox will use community star ratings to sort
+LaunchBox now gracefully handles your library in a less destructive way when exceeding the 100-game limit without a license
+A Stretch Background Videos setting has been added to both Platform View Settings and Game View Settings
+Fixed a rare crash for when a game exists in your library that is part of a platform that does not exist
+Fixed a potential crash that could occur during a platform save
+Version 1.14 - Released May 30, 2024
+Optimized navigation sounds initialization for faster startup
+Improved video handling for Custom Themes that remove the background or foreground video elements, automatically playing a video regardless of the user's View setting
+The media download process has been optimized for smoother performance, helping devices with limited resources
+Streaming videos will now automatically pause when your internet connection drops
+Added media indicators to all default views, so you'll always know when images or videos are being downloaded behind the scenes
+For Theme Developers: We've added new bindings that will give you more control over showing users when background media downloads are happening. Head over to the Documentation.pdf file in your Themes folder to learn more about these new bindings.
+Improved stability when navigating game lists while game statistics syncing is enabled and while downloading game media
+Fixed a crash related to the platform saving process
+Fixed an issue where a screenshot may not have displayed under certain conditions
+Fixed rare issue where where downloaded images on the games page wouldn't always display correctly until the view was refreshed
+Fixed an issue where a video's audio might play unexpectedly
+Fixed rare crash encountered when entering an empty game list
+Fixed unexpected crash occurring when navigating away from a settings page with no menu items
+Fixed device-specific crash related to internet connectivity detection
+Version 1.13 - Released April 30, 2024
+Videos can now be streamed directly from YouTube using the video URL metadata point found under a game's Edit Metadata page. These streamed videos will appear in the same places as local videos would normally be displayed. You can enable this feature via the options menu
+An option to download and save streamed videos directly from a game's Edit Media page has been added
+Added navigation sounds, which supports startup, move, select, and back actions. Each action can play multiple sound files randomly or sequentially. Custom sound packs are supported, including full compatibility with Big Box sound packs. Place sound packs in the LaunchBox\Sounds folder. Configure options in the Options menu
+Search will now prioritizes title and alternate title by default. Advanced options allow searching by other metadata fields
+You can now set a global view for all sections (Root Filter, Secondary Filter, Game views) from the Manage Theme menu (top-right corner). Global views override section-specific views without affecting individual section configurations
+Full emulator support added for: Saturn.emu
+You can now track your Play Time and Play Count on a game's Edit Metadata page, with the option to reset those counts for a fresh start
+Improved controller navigation throughout the app
+You can now quickly sort your platforms by a number of different options
+Max Players is now available from the Filter's menu
+Fixed File Extension functionality in specific scenarios
+Implemented a warning message when insufficient storage space prevents saving files
+Exiting the View Settings menu now transitions you seamlessly back to your games
+A rare crash that could occur while using the Japanese language has been fixed
+Resolved 13 potential crashes throughout the application
+Version 1.12 - Released February 5, 2024
+RetroArch can now be automatically downloaded and installed when launching a game (if it's not installed already); this makes it super easy to get up and playing without the need for a user to set up RetroArch separately
+RetroArch cores can now be automatically downloaded and sent to RetroArch when launching a game (if the core is missing)
+A Manage RetroArch option is now available in the root menu, which allows you to download, install, and update RetroArch, and all its cores, with a touch of a button
+An "Add Downloaded Core..." value has been added to RetroArch's Default Core option. This will allow you to choose from core files that are placed inside of the following folder: \\LaunchBox\Emulators\RetroArch\Cores
+LaunchBox now keeps track of your games' play time automatically. Use your LaunchBox Games Database account to sync play times between all of your Android and Windows LaunchBox builds.
+You can now sort by play time
+The following emulators are now fully supported: MAME4Droid 2024, Yuzu Early Access, Citra Nightly, and Citra Canary
+The PX68k, Citra, Melon DS, and BSNES RetroArch cores are now available for Sharp X68000, 3DS, DS and SNES respectively
+PPSSPP Gold will now launch on certain problematic devices (like the Odin 2 Pro)
+Menu text will now size dynamically based on a user's resolution and DPI settings
+Turning the Cloud Sync feature off and on again would sometimes cause incorrect changes to local sync data
+Small change to some default theme views which help with background fade displacement issues on select devices
+A rare crash has been fixed caused by attempting to load an image that does not exist
+Many navigational crashes have been fixed across the app
+Version 1.11 - Released October 31, 2023
+Fixed a potential issue with the import process's file extension filter causing no files to be imported
+Version 1.10 - Released October 30, 2023
+LaunchBox now remembers the last filter or platform you've used and selects it by default just like on the desktop; this works for all filter levels and platform categories (with an option available to disable)
+A new option to whitelist file extensions has been added to the import process
+Star ratings can now be set via the game menu
+Added the following new emulators: Yuzu, Flycast
+Improved the launching of the Yaba Sanshiro 2 and Yaba Sanshiro 2 Pro emulators
+The theming engine has seen major improvements including a brand new animation engine, a new image control, and a host of new fixes and improvements; see the LaunchBox\Themes\Documentation.pdf file on your Android device
+10 custom themes by Faeran have been created or updated to take advantage of the new theme options
+Improved performance across all views
+Fixed a rare crash that could occur during imports and media downloads
+Version 1.9 - Released April 24, 2023
+Game statistics can now be synced between your various collections in LaunchBox for Windows and/or LaunchBox for Android! Favorites, Completed, Last Played, Play Time, Play Count, and Star Rating can all be synced via your LaunchBox Games Database account. To enable, select the Sync Status item in the LaunchBox for Android main menu.
+Fixed issues with launching the following emulators on Android 13: Skyline, M64Plus FZ, M64Plus FZ Pro, Dolphin (though Dolphin itself still has the odd bug that requires games to sometimes be launched twice)
+For other emulators that still need to be updated in order to work correctly launching games on Android 13, LaunchBox will now warn the user and just launch the emulator without a game instead (instead of erroring out)
+Fixed an issue in the Options screen where setting the Default Root Filter or the Default Secondary Filter to Favorites was crashing the app (which doesn't really make sense to do, so the option has been removed)
+Version 1.8 - Released December 16, 2022
+Fixed an issue where platform categories were not always being populated after games were exported from the desktop app
+Fixed a rare potential error with grid view column sizing
+Fixed an issue where the Arcade platform could not be directly edited when it's the only platform in the Arcade platform category (and thus is skipped during navigation)
+Version 1.7 - Released December 13, 2022
+LaunchBox for Android can now be fullscreen! Two new options have been added to the main Options menu for hiding Android's top status bar and bottom navigation bar.
+LaunchBox for Android now supports platform categories such as Arcade, Computers, Consoles, and Handhelds. A new option to turn this on or off is available in the Options menu (Start with Platform Categories).
+Arcade filters have been added for various arcade genres and manufacturers, similar to LaunchBox on the desktop. A new option to turn this on or off is available in the Options menu (Override Arcade Genres with Improved Arcade Filters).
+A new Favorites filter has been added to all filters views (that have favorited games), with an option to turn it off in the Options menu
+Nintendo Switch emulator Skyline is now supported
+The Recently Played filter will no longer show up if no games have been played
+Performance has been significantly improved with the games grid views, which now use a more native renderer
+Downloading missing media should now do a better job of replacing any 0-byte files that were the result of previous failed downloads
+Vertical wheel spacing and sizing have been adjusted to make a cleaner experience between devices
+Version 1.6 - Released October 20, 2022
+LaunchBox for Android now has a Themes Manager just like the desktop version! It can be accessed from the main menu and will allow you to download and use any number of awesome themes without leaving the app.
+Platforms are now automatically sorted by manufacturer, console type, and release date by automatically populating the platform Sort Title fields
+Platform metadata can now be edited by choosing Edit Metadata from the platform details menu
+You can now pick and choose which game images to download from the LaunchBox Games Database by going to the Edit Media menu item on a game and then selecting Browse for New Games Database Image from the listed image types
+Image download priorities have been improved for images from the LaunchBox Games Database without a region (which should help to avoid downloading, for example, Japanese images on North American games)
+Fixed several issues with the manual game search process when editing a game's metadata, where the correct values were not always being used and updated
+Version 1.5 - Released August 30, 2022
+Alphanumeric navigation has been added to all games views! It can be accessed with directional navigation, the select button, or via the Jump to Letter option in the top menu.
+Game launching screens are now themeable and have been overhauled! You can choose which launching screen theme/view to use per platform/view via the View Settings option when inside of a games view.
+Added support for the MS-DOS platform using the DOSBox RetroArch cores
+Added support for the Nintendo Game & Watch platform using the Handheld Electronic (GW) RetroArch core
+Individual games can now be added manually with the new Add Game option in the main menu
+Explicit Save and Cancel options have been added to the game Edit Metadata and Edit Additional Versions pages in order to reduce confusion
+Added options to quickly mark a game as completed/incomplete or broken/working in the game details menu
+Controller navigation now properly skips the dividers in the settings menus
+Added new default platform banner images for Sega Naomi and Sega Naomi 2
+Added 83 new font options for theme developers; see the LaunchBox\Themes\Documentation.pdf file on your Android device
+Added a new DictionaryLookupConverter for theme developers; see the LaunchBox\Themes\Documentation.pdf file on your Android device
+Added two new properties to pages for theme developers: TopBarBackgroundColor and UseTransparentTheme; see the LaunchBox\Themes\Documentation.pdf file on your Android device
+New Swedish translation thanks to gantraz from the LaunchBox Community Forums
+Fixed an issue where the user could select "Recently Played" as the Default Root Filter in the options, which would cause a crash on startup
+Fixed some possible saving/syncing bugs when editing additional versions
+Fixed some incorrect popup window titles when browsing for files
+Fixed a rare issue where the edges of previous screenshots would mistakenly show behind videos
+Fixed an issue where launching games with multiple discs via auto-generated m3u files was causing save states not to work in some cases
+Fixed an issue with replacing images for Android games
+Fixed issues launching games on Android 11+ with the 2600.emu, ColEm, ColEm+, GBA.emu, GBC.emu, iNES, MasterGear, MD.emu, NES.emu, and PCE.emu emulators
+Version 1.4 - Released July 6, 2022
+All games views can now be sorted by any field (both ascending or descending) via the top menu
+All games views will now remember the previously selected game
+A new Recently Played filter is available in all filters lists that shows all your recently played games (though it will only show games that you play with this new version going forward since previous versions weren't tracking game plays)
+A new option to select a random game has been added to the top menu of games views
+A new option to change the ROMs folder path for a particular platform's games has been added to the top menu of games views
+New settings for Show All Games Filters and Show Recently Played Filters are available in the Options menu
+A new setting to Include Non-Game Android Apps is available in the Options menu
+The Options page has been organized with categories to make it much easier to navigate
+Last Played and Play Count fields are now updated when playing games
+Date Added, Date Modified, Last Played, and Play Count fields have been added to game metadata edits
+Imports now populate the Max Players and Release Type fields, which were previously missed
+Image fading is now smoother and doesn't flicker on the edges
+Fixed issues launching Nintendo DS games with the DraStic emulator
+Fixed an issue where native Android game metadata and media changes were not saving
+Fixed an issue where some old and/or miscategorized Android games were not importing on startup
+Version 1.3 - Released June 13, 2022
+The AetherSX2 emulator for Sony Playstation 2 is now fully supported and will launch games! However, you will need to open up the emulator first and let it scan your PS2 ROMs folder in order for it to have access to your ROMs.
+Both PPSSPP and PPSSPP Gold for Sony PSP are now fully supported and will launch games on Android 11+! However, you will need to open up the emulators first and let them scan your PSP ROMs folder with the Browse button for them to have access to your ROMs (on Android 11+).
+Yaba Sanshiro 2 and Yaba Sanshiro 2 Pro have been added, but they do not work to launch games on Android 11+. As far as we can tell, this is because the developer has not yet added support for launching games with the new Android storage access framework. Please hit us up on the LaunchBox forums if you know otherwise or have any further information.
+Dolphin MMJR is now the default emulator for Nintendo GameCube and Nintendo Wii, because it is so much better with performance
+Support for Dolphin MMJR2 has been added as well, but it is not recommended for most users because it has been abandoned in favor of Dolphin MMJR
+Added a new option to the MAME imports to skip games that require a CHD file; this is ideal for mobile devices because the CHD files increase the ROM set space requirements from 66 gigs to roughly 500 gigs, and only around 120 games actually require a CHD, so it's usually better to omit the CHDs for mobile devices that run MAME
+Games are now sorted more similarly to how they are in the desktop apps, ignoring articles like "The", "A", and "An"
+M3U playlists are now used for games with multiple discs (to allow for easy disc switching) when launching RetroArch with the following cores: duckstation, swanstation, mednafen_psx_hw, mednafen_psx
+Added a new option to "Quit RetroArch on Losing Focus" to the platform emulator settings; this option will help to ensure that new games will be launched properly even if a previous game is still running in RetroArch. However, it will also prevent games from resuming when the screen is turned off, if this setting is turned on.
+Fixed errors importing Capcom Play System, Capcom Play System II, and Capcom Play System III
+Fixed a crash when trying to download missing media with no connection
+Version 1.2 - Released June 6, 2022
+Custom themes are now available in LaunchBox for Android! Download them from the LaunchBox Community Forums here: https://forums.launchbox-app.com/files/category/36-custom-themes/
+Three new themes are now included with LaunchBox for Android: Alisia (with both platforms/filters and games views), BannerBox Lite (with a new games view to match the existing platform banners view), and The Grid (with a new games view). Try these out by selecting Change View from the top menus on platforms, filters, and games views.
+Two additional themes (with more coming!) are available on the LaunchBox Community Forums: Emblem and Unified Lite. Download them here: https://forums.launchbox-app.com/files/category/36-custom-themes/
+The EmuMovies downloader has been updated to the new version of the API and should be much more stable
+Image downloads have now been limited to 2000 pixels wide and 2000 pixels tall, which will reduce media storage space requirements and increase performance and stability
+Loading up emulators should be slightly less jarring now (Android's launching animations have been disabled when launching emulators)
+RetroArch will no longer require you to complete exit the game before launching a new game
+Added support for the following new platforms: Amstrad GX4000, Capcom Play System, Capcom Play System II, Capcom Play System III, Commodore Amiga CD32, Nintendo Famicom Disk System, Nintendo Satellaview, Philips CD-i, Sega Naomi, Sega Naomi 2
+Fixed an issue where excessively large images (bigger than 4K) could crash the app on some devices
+Fixed an issue where the Sort Title field was not being used properly to sort the games in the games views
+Fixed an issue where backing out of the metadata search page with a controller was backing completely out to the filters view
+Version 1.1 - Released April 12, 2022
+Full game editing is now available by long-pressing a game and selecting Edit Metadata or Edit Media
+Fixing incorrect matches to the LaunchBox Games Database is now possible by selecting the Search LaunchBox Games Database option in the Edit Metadata screen
+Platform theme videos are now available for download by selecting Download Theme Videos from the top right menu
+Platform theme videos can now be played in the background in the Wheel with Details and Text List with Details platforms views
+Many customization options have been added to the platform/filter Wheel with Details and Text List with Details views to hide and show items and enable the background videos
+Added a workaround for accessing network drives with the latest glitchy Nvidia Shield firmware (latest hotfix from Nvidia is still required - see here: https://forums.launchbox-app.com/topic/65300-issues-with-the-latest-firmware-on-nvidia-shield-tv-devices-how-to-fix/ )
+Deleting a platform will now optionally delete all media (including videos) instead of just images
+Improved the initial startup process so that the app does not have to be manually restarted after accepting the new storage permissions on Android 11 and 12
+The update process has been streamlined to no longer require multiple manual restarts of the app
+The data saving and loading processes have been streamlined and are now more robust, with automatically restored backups when needed
+You can now change the default version of a game by selecting Change Default Version from the game's context menu
+Fixed an issue where disabling media background downloads would prevent some existing media from showing
+Fixed an issue where one-off game deletions were not always deleting all associated media when choosing to delete media
+Fixed an issue where importing MAME games was not excluding games that already existed properly (even when turning off duplicates)
+Fixed an issue that was causing videos to only loop twice
+Version 1.0 - Released February 15, 2022
+Support for gameplay videos has been added! They can be downloaded from EmuMovies via the Download Missing Media option or exported from your desktop collection. All text list and wheel games views support the videos, either in the background or the foreground.
+Both game title and gameplay screenshots have been added as well! They will show in the new Wheel with Two-Column Details or Text List with Two-Column Details views in place of the video if no video exists (or always if videos are shown in the background).
+New "Wheel with Two-Column Details" and "Text List with Two-Column Details" games views have been added with support for videos or screenshots in the foreground in addition to the box art
+New "Prioritize Gameplay Screenshots" option has been added for the above two new views
+A new option to enable hardware decoding for VLC video playback is available in the Options screen; however, some devices have stability issues with it, so you may need to turn it back off if you experience crashes
+A new Background Fade option is available in the wheel and text list games view settings that will allow you to control how dark the background video or background image is
+New Background Video and Stretch Background Video options are available in the wheel and text list games view settings
+Performance on lower-end devices (such as the Nvidia Shield) is much improved during navigation
+Support for the dreaded new Android file permissions model has been added; devices that are running Android 11 or higher will now be prompted to allow access to all files on startup, which is necessary in order to properly launch some emulators
+Launching the newest versions of Dolphin, Snes9x EX+, Citra MMJ (the Storage Access Version), Mupen64Plus FZ, and Mupen64Plus FZ Pro now work properly on Android 11+ (once again you can thank Google for repeated poor design decisions causing these unnecessary issues)
+Added support for 4 new RetroArch cores: a5200_libretro_android.so (Atari 5200), bk_libretro_android.so (Elektronika BK), gearcoleco_libretro_android.so (ColecoVision), and swanstation_libretro_android.so (Sony Playstation)
+Improved media download speeds by downloading more things at once and caching metadata
+The All Games filter has been moved to be last on the main screen only (it's still first on secondary filter screens)
+Fix for occasional crash when returning to LaunchBox from other apps
+Fix for the selected media not always updating properly after searching
+Fixes for the issues with Nvidia's broken updates to the Nvidia Shield TV software (still requires Nvidia's latest hotfix, please see this post: https://forums.launchbox-app.com/topic/65300-issues-with-the-latest-firmware-on-nvidia-shield-tv-devices-how-to-fix/ )
+Fix for a potential crash when changing the selected language in the Options
+Fix for not always using the selected language
+Fix for All Games images not showing up properly when using a different language than English
+Version 0.42 - Released October 25, 2021
+Games can now be filtered by Platform, Genre, Developer, Publisher, Rating, Play Mode, Region, Series, Status, and/or Source fields
+The default root filter can now be changed to any of the above filtering options (Options > Default Root Filter)
+A default secondary filter option has also been added that will allow you to add a second filter to default navigation (Options > Default Secondary Filter); this will allow you to navigate by platform and then by genre, for example
+Fully dynamic and nested filtering is now available, which means you can filter to anything at any time; long press on a platform or filter and select Filter, or choose Filter from the top menu of any games list
+An All Games option has been added to all filter views
+Added the ability to customize all platform/filter media; you can long press on a platform or filter and select Edit Media to change all media items
+The Android games list will now only show apps that are in the Android Game category; unfortunately though, Android apps are often miscategorized, so it might not be perfect
+The Arcade platform now supports the RetroArch Flycast core
+Reduced the potential for crashes related to misbehaving game controllers
+Added support for FPse64
+Version 0.41 - Released September 7, 2021
+Fixed an issue where the Android platform was not saving changes to the view
+Fixed an issue where the emulator settings pages were not always loading up the correct value for the Extract ROM Archives setting
+Version 0.40 - Released September 2, 2021
+Added a Search option to games lists via the top menu
+Fixed an issue where game emulator settings overrides were not working properly
+Fixed an emulator settings potential crash issue with the MSX, MSX2, and MSX2+ platforms
+Version 0.39 - Released August 31, 2021
+Read-only access to network shares on Nvidia Shield devices can now be used to import games from; however, media cannot be stored over the network as Nvidia Shield network shares are always read-only
+Added a bunch of saved game/state file extensions to the exclusions list for importing games, which should help to not import saved game/state files that are in the file system next to ROM files; thanks to dmaker on the forums for the list
+Improved multi-track bin/cue file imports to not import extra bin file tracks, so long as the bin files start with the same file name as the cue file (if they're all in the same folder)
+Improved multi-track bin/cue file imports to not import extra bin file tracks if each set of bins and cues are in individual subfolders and the "Import Files from Subfolders" option is checked
+Added support for Pizza Boy GBC Free, Pizza Boy GBA Free, and Pizza Boy GBA Pro (though the free versions are unable to actually launch games from a frontend)
+Improved controller navigation and controller compatibility by adding more button bindings
+Version 0.38 - Released August 30, 2021
+Added a new option to "Skip Menu and Play Game on Tap", which will remove a step and allow you to immediately play games without pulling up the game menu; if enabled, you can still access the game menu with a long press
+Emulator settings can now be overridden on individual games via the game menu
+Fixed the DuckStation emulator to no longer have issues launching games
+Version 0.37 - Released August 27, 2021
+Improved region prioritization for image downloads, which should help the images that are downloaded to better match the region of the game and/or the prioritized region
+Added 23 missing platform banners for some of the more obscure platforms; thanks to Faeran and other members of the community for their work on the images
+Added support for ClassicBoy Gold and Dolphin MMJR
+Added support for Duckstation, Citra, and Citra MMJ (though unfortunately all of these emulators are broken and will not actually launch games from a frontend; we can only launch the emulator itself)
+Added support for Mupen64Plus FZ and Mupen64Plus FZ Pro (though they also appear to be broken on some devices; games will launch fine on an Nvidia Shield TV, but they fail to launch with a "Failed to open ROM file for reading" error on some other devices)
+Added support for Nintendo Game Boy and Nintendo Game Boy Color to the RetroArch mGBA core
+Added problematic emulator warnings on some emulators to help notify users of broken emulators
+Version 0.36 - Released August 26, 2021
+Fixed an issue with some Nvidia Shield devices where a read-only file system error was occurring on startup; thanks to Madcore for help testing
+Version 0.35 - Released August 25, 2021
+Added support for 8 new platforms: Apple II, Apple IIGS, Commodore PET, Fairchild Channel F, Neo Geo CD, PC Engine SuperGrafx, Sharp X1, and Watara Supervision
+Added support for 25 new RetroArch cores in order to support the new platforms and better support some existing platforms as well
+Updated the RetroArch recommended/default cores list with more up to date options
+Version 0.34 - Released August 24, 2021
+Three new platform views have been added that much more closely resemble the Big Box experience on the desktop; we now have wheels and a new BannerBox-style platforms list (thanks to Faeran)
+Two new game views have been added as well, including one with wheels
+The app's theming has been completely overhauled with a dark theme that better matches the rest of the interface
+Imports are now very fast, because LaunchBox does not download all media during the initial import process; instead, media is now downloaded as needed. This can be turned off in the Options menu.
+A new option to "Download All Missing Media" is available for each platform; this will allow you to download everything for the platform all at once, if desired
+Games can now be favorited, which will optionally put them first in the game lists
+LaunchBox now defaults to using a new folder in the root of the SD card (priority) or in the root of the internal storage instead of Android's default location
+The LaunchBox folder can now be easily changed to a different folder via the Options screen
+Compatibility with the Nvidia Shield TV has been improved by using a LaunchBox folder inside of the NVIDIA_SHIELD folder in the root of external storage instead of trying to use a LaunchBox folder directly in the root
+Added a .nomedia file to the root LaunchBox folder so that the game images don't show up in the Android image galleries
+LaunchBox for Android is now free for use with less than 100 games; a new licensing system based on our desktop DRM-free licensing will unlock an unlimited number of games
+Version 0.33 - Released January 17, 2020
+Fixed issues with imports on a few platforms with incorrect platform names that don't exist on the LaunchBox Games Database
+Added the Sammy Atomiswave platform
+Version 0.32 - Released January 2, 2020
+Custom emulators are now supported, if you have the correct metadata for them (package name, activity name, and ROM path key)
+Added support for over 50 new emulators!
+Version 0.31 - Released December 12, 2019
+Improved the import process to be faster and use fewer resources, which should also help with stability on lower-end devices
+Version 0.30 - Released November 27, 2019
+Fixed some potential import process stability issues with poor connections and/or low-powered devices
+Version 0.29 - Released November 21, 2019
+You can now play combined/additional game versions by long-pressing a game from the list and selecting "Additional Versions..."
+A new region prioritization option is available on imports, used when combining games
+More granular options for MAME imports are now available (such as what types of games to skip)
+The option to combine games with matching titles on imports is now more accurate
+Version 0.28 - Released November 15, 2019
+Fixed the import process to resolve an issue where some images were not downloading properly
+Improved download performance with the new import process
+Version 0.27 - Released November 14, 2019
+Optimized the import process to hopefully prevent some devices from killing it due to high resource usage
+Version 0.26 - Released November 13, 2019
+Added an import process for importing games directly on your Android device
+Version 0.25 - Released September 25, 2019
+Added support for sideloaded versions of RetroArch (both 32-bit and 64-bit); this is very useful if you want to use a recent version of MAME on Android, as recent MAME cores are currently only available in the 32-bit version of RetroArch
+Added support for MAME4droid emulator for MAME/Arcade; keep in mind though that it expects a very old MAME ROM set, so sideloading RetroArch 32-bit is recommended instead
+Added better logic for platform-specific default extract archives settings
+Fixed some rare error messages not displaying correctly and crashing instead
+Version 0.24 - Released September 16, 2019
+New long-press menu is available in the games lists (either by touch or by holding down the A button on a controller)
+Games can now be deleted via the long-press menu in the games list, and you can choose whether or not to delete game media and/or game files
+Added Yabo Sanshiro and Yaba Sanshiro Pro emulators for Sega Saturn (now working properly)
+Version 0.23 - Released September 13, 2019
+New long-press menu is available in the platforms list (either by touch or by holding down the A button on a controller)
+Platforms can now be deleted via the long-press menu in the platforms list, and you can choose whether or not to delete images and game files
+Fixed controllers not working properly after selecting Exit from the main menu and restarting
+Version 0.22 - Released September 12, 2019
+Fixed an additional issue where controllers were not working properly in some cases upon restarting the app
+Version 0.21 - Released September 9, 2019
+New Boxes View Settings page with platform-specific settings for the game boxes views
+Game Boxes View setting for style (can switch back to the old style without image backgrounds)
+Game Boxes View setting for box width and height; can now specify box width and height separately for each platform
+New Change Log Screen available from the main menu
+New Forums Support link in the main menu
+Version 0.20 - Released September 8, 2019
+Translation updates for Italian, German, French, Russian, Spanish, and Brazilian Portuguese
+Fixed incorrect platform names for NEC TurboGrafx-16 and NEC TurboGrafx-CD
+Disabled DamonPS2, NEO.emu, and Yaba Sanshiro for the time being as they are not currently working
+Version 0.19 - Released September 6, 2019
+Fixed a regression where controllers were again not working properly in all cases after returning from games
+Added support for Dolphin emulator
+Added support for DamonPS2 and DamonPS2 Pro emulators
+Added support for fMSX and fMSX Deluxe emulators
+Added support for Redream emulator
+Version 0.18 - Released September 5, 2019
+New boxes view overhaul with support for background fanart images
+New launching view overhaul, also with support for background fanart images
+Added Yaba Sanshiro and Yaba Sanshiro Pro emulators for Sega Saturn
+Version 0.17 - Released September 3, 2019
+Added Sony PSP Minis platform to valid emulators
+Fixed an issue where controllers were sometimes not working after returning to LaunchBox from a game
+Temporarily removed the MESS core option for RetroArch as it is not launching properly
+Fixed the message box that comes up if no data is found to only show up on initial launch, instead of every time LaunchBox is resumed
+Version 0.16 - Released September 2, 2019
+New per-platform option to extract ROM archives or not
+Fixed missing games issue from Android platform; due to the poor classification of games vs. apps on Android, some apps may show up now, but at least all games will be included
+Added support for two new emulators: My Boy! for GBA and Mupen64Plus FZ for N64
+Fixed the PPSSPP Gold emulator
+Extracted ROM archives are now cleaned up with a max of ten archives kept, and existing archives will be used instead of re-extracting
+Version 0.15 - Released August 30, 2019
+New startup screen with file extraction progress bar
+Now checks to make sure that the ROM file exists before launching in order to reduce confusion
+Added SNK Neo Geo AES and SNK Neo Geo MVS to the supported platforms for RetroArch
+Version 0.14 - Released August 28, 2019
+Enabled support for Android 4.4 (Kit Kat), primarily for GPD XD devices
+More robust error handling/reporting for data loading and launching emulators
+Updated About screen
+Version 0.13 - Released August 28, 2019
+Enabled support for Android 4.4 (Kit Kat), primarily for GPD XD devices
+More robust error handling/reporting for data loading and launching emulators
+Updated About screen
+Version 0.12 - Released August 27, 2019
+Added parsing Android games back in, with an option to disable
+Fixed emulator launching issues for many different emulators
+New Exit option in the main menu
+Improved error handling for launching emulators
+Improved searching and error handling for initializing the root folder
+Improved error handling for corrupt data
+Now notifies the user to export via the desktop application if no data is found on startup
+Version 0.11 - Released August 26, 2019
+Fixed crash/white screen on first start after accepting permissions
+Improved error handling on startup
+Now searches for only folders with actual content (avoids using an empty folder when exported platforms exist elsewhere)
+New splash screen
+Version 0.10 - Released August 24, 2019
+Fixed some potential crashes on first launch when accepting permissions
+Version 0.9 - Released August 24, 2019
+Fixed some potential crashes related to missing folders
+Version 0.8 - Released August 24, 2019
+Temporarily removed the auto-parsing for Android apps on startup due to apparent startup issues. Will add this feature back in after more testing.
+Version 0.7 - Released August 23, 2019
+New options screen with the ability to change the language
+Version 0.6 - Released August 23, 2019
+Initial public beta release

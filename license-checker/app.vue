@@ -12,8 +12,8 @@
                 License Version Checker
               </h1>
               <p class="page-copy mt-3 text-sm leading-6">
-                Upload a LaunchBox license file or enter an issue date to see the most
-                recent compatible {{ currentProductLabel }} version.
+                Upload your license or enter an issue date to find the newest
+                compatible {{ currentProductLabel }} version.
               </p>
             </div>
 
@@ -45,19 +45,15 @@
 
         <div class="widget-stack mt-5">
           <section class="panel panel--hero p-5">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h2 class="panel-title text-lg font-semibold">
-                  Most Recent Compatible Version
-                </h2>
-                <p class="panel-copy mt-1 text-sm">
-                  The newest compatible {{ currentProductLabel }} release is shown
-                  first, with older compatible versions tucked underneath.
-                </p>
-              </div>
-              <span class="platform-badge px-3 py-1 text-xs font-semibold uppercase tracking-wide">
-                {{ currentProductLabel }}
-              </span>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h2 class="panel-title text-lg font-semibold">
+                    Most Recent Compatible Version
+                  </h2>
+                </div>
+                <span class="platform-badge px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+                  {{ currentProductLabel }}
+                </span>
             </div>
 
             <div
@@ -113,12 +109,22 @@
                 </div>
 
                 <div class="result-actions">
-                  <a
-                    :href="latestCompatibleVersion.downloadUrl"
-                    :class="downloadButtonClass"
-                  >
-                    Download
-                  </a>
+                  <div class="action-stack">
+                    <a
+                      :href="latestCompatibleVersion.downloadUrl"
+                      :class="downloadButtonClass"
+                    >
+                      Download
+                    </a>
+                    <button
+                      v-if="hasPatchNotes(latestCompatibleVersion)"
+                      class="action-button action-button--ghost action-button--small"
+                      type="button"
+                      @click="openPatchNotes(latestCompatibleVersion)"
+                    >
+                      Patch Notes
+                    </button>
+                  </div>
                   <p class="fine-copy text-xs">
                     Download links are placeholders for now.
                   </p>
@@ -153,12 +159,22 @@
                       </p>
                     </div>
 
-                    <a
-                      :href="version.downloadUrl"
-                      :class="downloadButtonClass"
-                    >
-                      Download
-                    </a>
+                    <div class="item-actions">
+                      <a
+                        :href="version.downloadUrl"
+                        :class="downloadButtonClass"
+                      >
+                        Download
+                      </a>
+                      <button
+                        v-if="hasPatchNotes(version)"
+                        class="action-button action-button--ghost action-button--small"
+                        type="button"
+                        @click="openPatchNotes(version)"
+                      >
+                        Patch Notes
+                      </button>
+                    </div>
                   </li>
                 </ul>
               </details>
@@ -176,8 +192,7 @@
               v-else
               class="status-card status-card--neutral mt-4 text-sm"
             >
-              Upload a LaunchBox license file or enter an issued date to calculate
-              the newest compatible {{ currentProductLabel }} version.
+              No license loaded yet. Upload a license or enter a date to begin.
             </div>
           </section>
 
@@ -187,8 +202,7 @@
                 <div>
                   <h2 class="panel-title text-lg font-semibold">License Input</h2>
                   <p class="panel-copy mt-1 text-sm">
-                    Use a license file when you have one, or enter the issued date
-                    manually.
+                    Upload a license file or enter the issued date manually.
                   </p>
                 </div>
                 <button
@@ -293,9 +307,8 @@
             <section class="panel panel--compact p-5">
               <h2 class="panel-title text-lg font-semibold">Version Search</h2>
               <p class="panel-copy mt-1 text-sm">
-                Search the current compatible results or switch to All to search the
-                full {{ currentProductLabel }} release list without loading a
-                license.
+                Search every
+                {{ currentProductLabel }} release.
               </p>
 
               <div class="scope-switch mt-4">
@@ -380,12 +393,22 @@
                       </p>
                     </div>
 
-                    <a
-                      :href="scopedVersionMatch.downloadUrl"
-                      :class="downloadButtonClass"
-                    >
-                      Download
-                    </a>
+                    <div class="search-actions">
+                      <a
+                        :href="scopedVersionMatch.downloadUrl"
+                        :class="downloadButtonClass"
+                      >
+                        Download
+                      </a>
+                      <button
+                        v-if="hasPatchNotes(scopedVersionMatch)"
+                        class="action-button action-button--ghost action-button--small"
+                        type="button"
+                        @click="openPatchNotes(scopedVersionMatch)"
+                      >
+                        Patch Notes
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -401,6 +424,14 @@
                     The current license is eligible through
                     {{ formatDate(entitlementEndDate) }}.
                   </p>
+                  <button
+                    v-if="hasPatchNotes(allVersionMatch)"
+                    class="action-button action-button--ghost action-button--small mt-4"
+                    type="button"
+                    @click="openPatchNotes(allVersionMatch)"
+                  >
+                    Patch Notes
+                  </button>
                 </div>
 
                 <div
@@ -414,13 +445,63 @@
             </section>
           </div>
         </div>
+
+        <div
+          v-if="isPatchNotesOpen && activePatchNotes"
+          class="notes-overlay"
+          @click.self="closePatchNotes"
+        >
+          <section
+            class="notes-modal p-5 md:p-6"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="patch-notes-title"
+          >
+            <div class="notes-modal__header">
+              <div>
+                <p class="section-kicker text-sm font-semibold uppercase tracking-wide">
+                  {{ currentProductLabel }} patch notes
+                </p>
+                <h2
+                  id="patch-notes-title"
+                  class="value-title mt-2 text-2xl font-semibold tracking-tight"
+                >
+                  Version {{ activePatchNotes.version }}
+                </h2>
+                <p class="panel-copy mt-2 text-sm">
+                  Released {{ formatDate(activePatchNotes.releaseDate) }}
+                </p>
+              </div>
+
+              <button
+                class="action-button action-button--ghost action-button--small"
+                type="button"
+                @click="closePatchNotes"
+              >
+                Close
+              </button>
+            </div>
+
+            <div class="notes-modal__body mt-5">
+              <ul class="notes-list">
+                <li
+                  v-for="(note, index) in activePatchNotes.notes"
+                  :key="`${activePatchNotes.version}-${index}`"
+                  class="notes-list__item text-sm leading-6"
+                >
+                  {{ note }}
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useVersionStore } from "@/store/versionStore";
 import {
   addOneYearToDate,
@@ -453,15 +534,22 @@ const licenseHolderName = ref("");
 const licenseHolderEmail = ref("");
 const fileError = ref("");
 const searchQuery = ref("");
-const searchScope = ref("compatible");
+const searchScope = ref("all");
+const activePatchNotes = ref(null);
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
 
 onMounted(() => {
   versionStore.fetchVersions(selectedProduct.value);
+  window.addEventListener("keydown", handleWindowKeydown);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleWindowKeydown);
 });
 
 watch(selectedProduct, (productKey, previousProductKey) => {
   if (productKey !== previousProductKey) {
+    closePatchNotes();
     versionStore.fetchVersions(productKey);
   }
 });
@@ -506,6 +594,7 @@ const olderCompatibleVersions = computed(() => compatibleVersions.value.slice(1)
 const scopedVersions = computed(() =>
   searchScope.value === "all" ? allVersions.value : compatibleVersions.value,
 );
+const isPatchNotesOpen = computed(() => Boolean(activePatchNotes.value));
 const scopedVersionMatch = computed(() =>
   findVersion(scopedVersions.value, searchQuery.value),
 );
@@ -550,6 +639,27 @@ const searchStatus = computed(() => {
 
 const formatDate = (isoDate) =>
   dateFormatter.format(new Date(`${isoDate}T00:00:00Z`));
+
+const hasPatchNotes = (version) =>
+  Array.isArray(version?.notes) && version.notes.length > 0;
+
+const openPatchNotes = (version) => {
+  if (!hasPatchNotes(version)) {
+    return;
+  }
+
+  activePatchNotes.value = version;
+};
+
+const closePatchNotes = () => {
+  activePatchNotes.value = null;
+};
+
+const handleWindowKeydown = (event) => {
+  if (event.key === "Escape" && isPatchNotesOpen.value) {
+    closePatchNotes();
+  }
+};
 
 const clearLicenseContext = () => {
   issuedDate.value = "";
@@ -618,6 +728,9 @@ const handleFileUpload = async (event) => {
 }
 
 .page-frame {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   border-radius: 24px;
   border: 1px solid var(--lb-border);
   background:
@@ -830,6 +943,14 @@ const handleFileUpload = async (event) => {
   gap: 0.75rem;
 }
 
+.action-stack,
+.item-actions,
+.search-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 .action-button:hover {
   transform: translateY(-1px);
 }
@@ -880,6 +1001,12 @@ const handleFileUpload = async (event) => {
   color: var(--lb-heading);
   border-color: var(--lb-accent);
   box-shadow: none;
+}
+
+.action-button--small {
+  min-height: 2.75rem;
+  font-size: 0.82rem;
+  padding: 0.68rem 1rem;
 }
 
 .platform-badge,
@@ -973,6 +1100,61 @@ const handleFileUpload = async (event) => {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 0 18px rgba(114, 190, 65, 0.16);
+}
+
+.notes-overlay {
+  position: absolute;
+  inset: 0.9rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border-radius: 1.5rem;
+  background: rgba(2, 15, 20, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.notes-modal {
+  width: min(100%, 42rem);
+  max-height: min(100%, 36rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(99, 185, 255, 0.2);
+  background: linear-gradient(180deg, rgba(17, 47, 58, 0.98) 0%, rgba(8, 28, 35, 0.98) 100%);
+  box-shadow: var(--lb-shadow);
+}
+
+.notes-modal__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.notes-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.notes-list {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notes-list__item {
+  border-radius: 1rem;
+  border: 1px solid var(--lb-border);
+  background: rgba(17, 46, 56, 0.58);
+  color: var(--lb-body-strong);
+  padding: 0.85rem 1rem;
 }
 
 @media (min-width: 768px) {

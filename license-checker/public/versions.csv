@@ -1,4 +1,11 @@
 version,month,day,year
+13.26,February,9,2026
+13.25,January,27,2026
+13.24,September,26,2025
+13.23,August,21,2025
+13.22,July,3,2025
+13.21,April,24,2025
+13.20,February,27,2025
 13.19,February,11,2025
 13.18,December,17,2024
 13.17,October,21,2024
@@ -139,6 +146,9 @@ version,month,day,year
 4.5,March,10,2015
 4.4,January,27,2015
 4.3,January,3,2015
+4.2,December,28,2014
+4.1,December,16,2014
+4.0,December,15,2014
 3.8,November,11,2014
 3.7,November,9,2014
 3.6,November,4,2014

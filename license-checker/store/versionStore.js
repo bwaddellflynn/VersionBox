@@ -1,9 +1,16 @@
 import { defineStore } from "pinia";
+import { parseChangelogText } from "~/utils/changelogParser";
 import { buildDownloadUrl, parseCsvDate } from "~/utils/licenseCompatibility";
 
 const PRODUCT_FILES = {
-  windows: "/versions.csv",
-  android: "/android-versions.csv",
+  windows: {
+    versions: "/versions.csv",
+    changelog: "/windows-changelog.txt",
+  },
+  android: {
+    versions: "/android-versions.csv",
+    changelog: "/android-changelog.txt",
+  },
 };
 
 const PRODUCT_LABELS = {
@@ -28,7 +35,9 @@ export const useVersionStore = defineStore("versionStore", {
   }),
   actions: {
     async fetchVersions(productKey) {
-      if (!PRODUCT_FILES[productKey]) {
+      const productFiles = PRODUCT_FILES[productKey];
+
+      if (!productFiles) {
         return;
       }
 
@@ -43,13 +52,29 @@ export const useVersionStore = defineStore("versionStore", {
       this.errorsByProduct[productKey] = "";
 
       try {
-        const response = await fetch(PRODUCT_FILES[productKey]);
+        const response = await fetch(productFiles.versions);
 
         if (!response.ok) {
           throw new Error(`Version data request failed with status ${response.status}.`);
         }
 
         const text = await response.text();
+        let changelogByVersion = {};
+
+        try {
+          const changelogResponse = await fetch(productFiles.changelog);
+
+          if (changelogResponse.ok) {
+            changelogByVersion = parseChangelogText(await changelogResponse.text());
+          } else {
+            console.warn(
+              `Changelog request for ${productKey} returned status ${changelogResponse.status}.`,
+            );
+          }
+        } catch (error) {
+          console.warn(`Could not load changelog notes for ${productKey}.`, error);
+        }
+
         const parsedVersions = text
           .split(/\r?\n/)
           .slice(1)
@@ -90,6 +115,7 @@ export const useVersionStore = defineStore("versionStore", {
               productKey,
               productLabel: PRODUCT_LABELS[productKey],
               downloadUrl: buildDownloadUrl(productKey, version),
+              notes: changelogByVersion[version] || [],
             };
           })
           .filter(Boolean)
